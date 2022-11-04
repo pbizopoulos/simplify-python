@@ -1,0 +1,15 @@
+# Source Code Simplifier for Python
+https://pbizopoulos.github.io/source-code-simplifier
+
+# Requirements
+POSIX mandatory utilities
+Make
+Docker
+
+# Preparation
+git clone https://github.com/pbizopoulos/source-code-simplifier
+cd source-code-simplifier/
+
+# Usage
+make help		# Show help for python.
+make -C docs/ help 	# Show help for browser.

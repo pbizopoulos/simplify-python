@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1" name="viewport">
+		<title>Source code simplifier</title>
+		<link href="data:," rel="icon">
+		<link href="https://pbizopoulos.github.io/style.css" rel="stylesheet">
+		<link href="https://pyscript.net/latest/pyscript.css" rel="stylesheet">
+		<link href="style.css" rel="stylesheet">
+		<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+		<py-config src="./index.toml"></py-config>
+	</head>
+	<body>
+		<div id="div-header">
+			<div id="div-navigation">
+				<a href="https://pbizopoulos.github.io">Home page</a> / <b>Source code simplifier</b>
+			</div>
+			<div id="div-source-code-link">
+				<a href="https://github.com/pbizopoulos/source-code-simplifier">Source code</a>
+			</div>
+		</div>
+		A source code simplifier.
+		Its general rules are:
+		<ul>
+			<li>Classes are childs of the module</li>
+			<li>Compiler errors are not fixed</li>
+			<li>Defs are childs of the module or of classes</li>
+			<li>Everything that can be sorted is sorted</li>
+			<li>Forbid/replace anything complex when something newer/simpler is available</li>
+			<li>Forbid/remove anything that does not contribute to the result</li>
+			<li>Only one module named main.py</li>
+		</ul>
+		Installation:
+		<p><code>python3 -m pip install https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip</code></p>
+		Usage:
+		<p><code>source_code_simplifier code_input.py &gt; code_output.py</code></p>
+		Try online:
+		<div>
+			<select id="input-select"></select>
+			<select id="difference-simplified-select">
+				<option value="difference">Input-Simplified difference</option>
+				<option value="simplified">Simplified</option>
+			</select>
+		</div>
+		<div>
+			<textarea id="input-textarea" spellcheck="false"></textarea>
+			<pre id="difference-pre"></pre>
+			<pre id="simplified-pre" hidden></pre>
+		</div>
+		<py-script src="./index.py"></py-script>
+	</body>
+</html>
