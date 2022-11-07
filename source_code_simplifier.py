@@ -187,8 +187,7 @@ class Transformer(ast.NodeTransformer):
 
 def main():
     if len(sys.argv) == 2:
-        output = source_code_simplifier(sys.argv[1])
-        sys.stdout.write(output)
+        source_code_simplifier(sys.argv[1])
 
 
 def source_code_simplifier(code_input):
