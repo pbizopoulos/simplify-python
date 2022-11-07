@@ -63,7 +63,7 @@ bin/check: $(python_file_name) bin
 	touch bin/check
 
 Dockerfile:
-	printf 'FROM python\nCOPY pyproject.toml .\nRUN python3 -m pip install --no-cache-dir --upgrade pip && python3 -m pip install --no-cache-dir .\n' > Dockerfile
+	printf 'FROM python\nWORKDIR $(work_dir)\nCOPY pyproject.toml .\nRUN python3 -m pip install --no-cache-dir --upgrade pip && python3 -m pip install --no-cache-dir .\n' > Dockerfile
 
 pyproject.toml:
 	printf '[project]\nname = "None"\nversion = "0"\ndependencies = []\n' > pyproject.toml
