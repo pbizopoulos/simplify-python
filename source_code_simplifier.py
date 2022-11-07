@@ -278,7 +278,12 @@ def source_code_simplifier(code_input):
             line_list.insert(def_index, '')
     output = '\n'.join(line_list)
     output += '\n'
-    return output
+    if isinstance(code_input, str):
+        with open(code_input, 'w') as file:
+            file.write(output)
+        sys.exit(1)
+    elif isinstance(code_input, TextIOWrapper):
+        return output
 
 
 if __name__ == '__main__':
