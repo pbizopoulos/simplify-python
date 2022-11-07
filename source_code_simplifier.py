@@ -281,7 +281,7 @@ def source_code_simplifier(code_input):
     if isinstance(code_input, str):
         with open(code_input, 'r+') as file:
             if output != file.read():
-                file_.write(output)
+                file.write(output)
                 sys.exit(1)
     elif isinstance(code_input, TextIOWrapper):
         return output
