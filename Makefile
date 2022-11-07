@@ -59,7 +59,7 @@ bin/check: $(python_file_name) bin
 		python /bin/bash -c '\
 		python3 -m pip install --no-cache-dir --upgrade pip && \
 		python3 -m pip install --no-cache-dir https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip && \
-		bin/.local/bin/source_code_simplifier $(python_file_name)'
+		source_code_simplifier $(python_file_name)'
 	touch bin/check
 
 Dockerfile:
