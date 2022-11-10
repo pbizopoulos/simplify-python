@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8">
 		<meta content="width=device-width, initial-scale=1" name="viewport">
@@ -11,15 +12,12 @@
 		<script defer src="https://pyscript.net/latest/pyscript.js"></script>
 		<py-config src="./index.toml"></py-config>
 	</head>
+
 	<body>
 		<nav>
-			<a href="https://pbizopoulos.github.io">Home page</a> |
-			<a href="https://github.com/pbizopoulos/source-code-simplifier">Source code</a>
+			<a href="https://github.com/pbizopoulos/source-code-simplifier">Source code</a> | <a href="https://pbizopoulos.github.io">Home page</a> / <b>Source code simplifier</b>
 		</nav>
-		<header>
-			<h2>Source code simplifier</h2>
-		</header>
-		Its general rules are:
+		<h3>General rules:</h3>
 		<ul>
 			<li>Classes are childs of the module</li>
 			<li>Compiler errors are not fixed</li>
@@ -29,11 +27,11 @@
 			<li>Forbid/remove anything that does not contribute to the result</li>
 			<li>Only one module named main.py</li>
 		</ul>
-		Installation:
-		<p><code>python3 -m pip install https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip</code></p>
-		Usage:
-		<p><code>source_code_simplifier code_input.py &gt; code_output.py</code></p>
-		Try online:
+		<h3>Installation:</h3>
+		<code>python3 -m pip install https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip</code>
+		<h3>Usage:</h3>
+		<code>source_code_simplifier code_input.py &gt; code_output.py</code>
+		<h3>Try online: </h3>
 		<div>
 			<select id="input-select"></select>
 			<select id="difference-simplified-select">
@@ -48,4 +46,5 @@
 		</div>
 		<py-script src="./index.py"></py-script>
 	</body>
+
 </html>
