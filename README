@@ -12,4 +12,4 @@ cd source-code-simplifier/
 
 # Usage
 make help		# Show help for python.
-make -C docs/ help 	# Show help for browser.
+cd docs/ && make help 	# Show help for browser.
