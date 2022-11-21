@@ -69,7 +69,7 @@ class Transformer(ast.NodeTransformer):
             new_node = ast.Call(ast.Name('isinstance'), args=[node.left.args, node.comparators], keywords=[])
             new_node.parent = node.parent
             return new_node
-        for (index, (ops, comparators)) in enumerate(zip(node.ops, node.comparators)):
+        for index, (ops, comparators) in enumerate(zip(node.ops, node.comparators)):
             if isinstance(comparators, ast.Constant):
                 if str(comparators.s) in ['None', 'True', 'False']:
                     if isinstance(ops, ast.Eq):
@@ -226,7 +226,7 @@ def source_code_simplifier(code_input):
             def_list.append(node_in_body)
         else:
             rest_list.append(node_in_body)
-    import_from_group_list_list = [list(grouped) for (_, grouped) in groupby(import_from_list, lambda element: element.module)]
+    import_from_group_list_list = [list(grouped) for _, grouped in groupby(import_from_list, lambda element: element.module)]
     import_from_list = []
     for import_from_group_list in import_from_group_list_list:
         import_from_name_list = []
@@ -258,19 +258,19 @@ def source_code_simplifier(code_input):
     name_main_index = line_list.index("if __name__ == '__main__':")
     line_list.insert(name_main_index, '')
     line_list.insert(name_main_index, '')
-    def_indices = [index for (index, element) in enumerate(line_list) if element.startswith('def ')]
+    def_indices = [index for index, element in enumerate(line_list) if element.startswith('def ')]
     for def_index in reversed(def_indices):
         if def_index > 0:
             line_list.insert(def_index, '')
             line_list.insert(def_index, '')
-    class_def_indices = [index for (index, element) in enumerate(line_list) if element.startswith('    def ')]
+    class_def_indices = [index for index, element in enumerate(line_list) if element.startswith('    def ')]
     for def_index in reversed(class_def_indices):
         if def_index > 0:
             if line_list[def_index - 1].startswith('    @'):
                 line_list.insert(def_index - 1, '')
             else:
                 line_list.insert(def_index, '')
-    class_indices = [index for (index, element) in enumerate(line_list) if element.startswith('class ')]
+    class_indices = [index for index, element in enumerate(line_list) if element.startswith('class ')]
     for def_index in reversed(class_indices):
         if def_index > 0:
             line_list.insert(def_index, '')
