@@ -45,7 +45,7 @@ def on_keyup_input_textarea(_):
 
 def on_select_input(_):
     with open(document.getElementById('input-select').value) as file:
-        document.getElementById('input-textarea').value = file.read()
+        document.getElementById('input-textarea').value = file.read()[:-1]
     document.getElementById('difference-pre').innerHTML = ''
     document.getElementById('simplified-pre').innerHTML = ''
     on_keyup_input_textarea(_)

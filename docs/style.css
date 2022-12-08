@@ -7,7 +7,7 @@ button {
 }
 
 pre {
-	border: solid;
+	border: groove;
 	line-height: normal;
 	margin: 0;
 	margin-left: 50%;
@@ -21,6 +21,8 @@ select {
 textarea {
 	float: left;
 	font-family: monospace;
+	line-height: normal;
+	padding: 0;
 	resize: none;
 	width: 50%;
 }
