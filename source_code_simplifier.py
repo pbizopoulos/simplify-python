@@ -17,9 +17,9 @@ class Transformer(ast.NodeTransformer):
         self.parent = node
         node = super().visit(node)
         if hasattr(node, 'name') and len(node.name) == 1:
-            raise AssertionError(f'line {node.lineno}, {node.name} node names cannot be single letter.')
+            raise AssertionError(f'line {node.lineno}, {node.name} node names cannot be single letter')
         if hasattr(node, 'id') and len(node.id) == 1 and (node.id != '_'):
-            raise AssertionError(f'line {node.lineno}, {node.id} node names cannot be single letter.')
+            raise AssertionError(f'line {node.lineno}, {node.id} node names cannot be single letter')
         if isinstance(node, ast.AST):
             self.parent = node.parent
         return node
@@ -27,16 +27,16 @@ class Transformer(ast.NodeTransformer):
     def visit_Assign(self, node):
         super().generic_visit(node)
         if isinstance(node.value, ast.Lambda):
-            raise AssertionError(f'line {node.lineno}, lambda assignments are forbidden.')
+            raise AssertionError(f'line {node.lineno}, lambda assignments are forbidden')
         for node_target in node.targets:
             if hasattr(node_target, 'id') and node_target.id in dir(builtins):
-                raise AssertionError(f'line {node.lineno}, {node_target.id} assignments to builtin names are forbidden.')
+                raise AssertionError(f'line {node.lineno}, {node_target.id} assignments to builtin names are forbidden')
         return node
 
     def visit_Call(self, node):
         super().generic_visit(node)
         if hasattr(node.func, 'attr') and node.func.attr == 'format' and isinstance(node.func.value, ast.Constant):
-            raise AssertionError(f'line {node.lineno}, printf strings are forbidden.')
+            raise AssertionError(f'line {node.lineno}, printf strings are forbidden')
         if hasattr(node.func, 'id') and node.func.id in ['breakpoint', 'print']:
             return None
         else:
@@ -45,20 +45,20 @@ class Transformer(ast.NodeTransformer):
     def visit_ClassDef(self, node):
         super().generic_visit(node)
         if not node.name[0].isupper():
-            raise AssertionError(f'line {node.lineno}, class names should be capitalized.')
-        for node_in_body in node.body:
-            if not isinstance(node_in_body, ast.FunctionDef):
-                raise AssertionError(f'line {node_in_body.lineno}, classes should contain only defs.')
+            raise AssertionError(f'line {node.lineno}, class names should be capitalized')
+        for node_body_node in node.body:
+            if not isinstance(node_body_node, ast.FunctionDef):
+                raise AssertionError(f'line {node_body_node.lineno}, classes should contain only defs')
         if not isinstance(node.parent, ast.Module):
-            raise AssertionError(f'line {node.lineno}, classes should reside only in the module.')
+            raise AssertionError(f'line {node.lineno}, classes should reside only in the module')
         base_class_list = []
         for node_base in node.bases:
             if not (hasattr(node_base, 'id') and node_base.id == 'object'):
                 base_class_list.append(node_base)
         node.bases = base_class_list
         def_in_class_list = []
-        for node_in_body in node.body:
-            def_in_class_list.append(node_in_body)
+        for node_body_node in node.body:
+            def_in_class_list.append(node_body_node)
         def_in_class_list.sort(key=lambda def_in_class: def_in_class.name)
         node.body = def_in_class_list
         return node
@@ -103,20 +103,20 @@ class Transformer(ast.NodeTransformer):
             if 'self' in arg_list:
                 arg_list.remove('self')
             if arg_list != sorted(arg_list):
-                raise AssertionError(f'line {node.lineno}, {node.name} unsorted def arguments are forbidden.')
+                raise AssertionError(f'line {node.lineno}, {node.name} unsorted def arguments are forbidden')
         node.returns = None
         if node.args.args:
             for arg in node.args.args:
                 arg.annotation = None
         if not isinstance(node.parent, (ast.Module, ast.ClassDef)):
-            raise AssertionError(f'line {node.lineno}, defs outside modules or classes are forbidden.')
+            raise AssertionError(f'line {node.lineno}, defs outside modules or classes are forbidden')
         if not node.body or (len(node.body) == 1 and isinstance(node.body[0], ast.Pass)):
-            raise AssertionError(f'line {node.lineno}, {node.name} empty def is forbidden.')
+            raise AssertionError(f'line {node.lineno}, {node.name} empty def is forbidden')
         return node
 
     def visit_Global(self, node):
         super().generic_visit(node)
-        raise AssertionError(f'line {node.lineno}, globals are forbidden.')
+        raise AssertionError(f'line {node.lineno}, globals are forbidden')
 
     def visit_If(self, node):
         super().generic_visit(node)
@@ -138,51 +138,51 @@ class Transformer(ast.NodeTransformer):
         module_filename = join(sys.path[0], f'{node.names[0].name}.py')
         for node_name in node.names:
             if '.' in node_name.name:
-                raise AssertionError(f'line {node_name.lineno}, imports submodules is forbidden.')
+                raise AssertionError(f'line {node_name.lineno}, imports submodules is forbidden')
         if not isinstance(node.parent, ast.Module):
-            raise AssertionError(f'line {node.lineno}, imports should reside only in the module.')
+            raise AssertionError(f'line {node.lineno}, imports should reside only in the module')
         if exists(module_filename):
-            raise AssertionError(f'line {node.lineno}, importing from local modules is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing from local modules is forbidden')
         node_name_list = [node_name.name for node_name in node.names]
         if 'logging' in node_name_list:
-            raise AssertionError(f'line {node.lineno}, importing logging is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing logging is forbidden')
         elif 'argparse' in node_name_list:
-            raise AssertionError(f'line {node.lineno}, importing argparse is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing argparse is forbidden')
         return node
 
     def visit_ImportFrom(self, node):
         super().generic_visit(node)
         module_filename = join(sys.path[0], f'{node.module}.py')
         if not isinstance(node.parent, ast.Module):
-            raise AssertionError(f'line {node.lineno}, import froms should reside only in the module.')
+            raise AssertionError(f'line {node.lineno}, import froms should reside only in the module')
         if exists(module_filename):
-            raise AssertionError(f'line {node.lineno}, importing from local modules is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing from local modules is forbidden')
         if node.module in ['argparse', 'logging']:
-            raise AssertionError(f'line {node.lineno}, importing {node.module} is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing {node.module} is forbidden')
         if node.names[0].name == '*':
-            raise AssertionError(f'line {node.lineno}, importing from * is forbidden.')
+            raise AssertionError(f'line {node.lineno}, importing from * is forbidden')
         if node.level > 0:
-            raise AssertionError(f'line {node.lineno}, relative imports are forbidden.')
+            raise AssertionError(f'line {node.lineno}, relative imports are forbidden')
         return node
 
     def visit_Module(self, node):
         super().generic_visit(node)
-        for node_in_body in node.body:
-            if not isinstance(node_in_body, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.FunctionDef)):
-                if not (isinstance(node_in_body, ast.If) and hasattr(node_in_body, 'test') and (node_in_body.test.left.id == '__name__')):
-                    raise AssertionError(f"line {node_in_body.lineno}, module childs should be only imports, classes, defs, or if __name__ == '__main__': .")
+        for node_body_node in node.body:
+            if not isinstance(node_body_node, (ast.Import, ast.ImportFrom, ast.ClassDef, ast.FunctionDef)):
+                if not (isinstance(node_body_node, ast.If) and hasattr(node_body_node, 'test') and (node_body_node.test.left.id == '__name__')):
+                    raise AssertionError(f"line {node_body_node.lineno}, module childs should be only imports, classes, defs, or if __name__ == '__main__':")
         return node
 
     def visit_Name(self, node):
         super().generic_visit(node)
         if isinstance(node.parent, ast.Assign):
             if node.id != '_' and (not node.id.islower()):
-                raise AssertionError(f'line {node.lineno}, assignment names should be lowercased.')
+                raise AssertionError(f'line {node.lineno}, assignment names should be lowercased')
         self.name_list.append(node.id)
         return node
 
     def visit_Try(self, node):
-        raise AssertionError(f'line {node.lineno}, try except is forbidden.')
+        raise AssertionError(f'line {node.lineno}, try except is forbidden')
 
 
 def main():
@@ -203,10 +203,12 @@ def source_code_simplifier(code_input):
     import_from_list = []
     import_list = []
     import_name_list = []
-    rest_list = []
-    for node_in_body in root.body:
-        if isinstance(node_in_body, ast.Import):
-            for node_name in node_in_body.names:
+    other_list = []
+    for root_body_node in root.body:
+        if isinstance(root_body_node, ast.ImportFrom):
+            import_from_list.append(root_body_node)
+        elif isinstance(root_body_node, ast.Import):
+            for node_name in root_body_node.names:
                 if node_name.asname:
                     node_name_name = node_name.asname
                 else:
@@ -218,14 +220,12 @@ def source_code_simplifier(code_input):
                     else:
                         new_node = ast.Import(names=[ast.alias(node_name.name)])
                     import_list.append(new_node)
-        elif isinstance(node_in_body, ast.ImportFrom):
-            import_from_list.append(node_in_body)
-        elif isinstance(node_in_body, ast.ClassDef):
-            class_list.append(node_in_body)
-        elif isinstance(node_in_body, ast.FunctionDef):
-            def_list.append(node_in_body)
+        elif isinstance(root_body_node, ast.ClassDef):
+            class_list.append(root_body_node)
+        elif isinstance(root_body_node, ast.FunctionDef):
+            def_list.append(root_body_node)
         else:
-            rest_list.append(node_in_body)
+            other_list.append(root_body_node)
     import_from_group_list_list = [list(grouped) for _, grouped in groupby(import_from_list, lambda element: element.module)]
     import_from_list = []
     for import_from_group_list in import_from_group_list_list:
@@ -247,45 +247,40 @@ def source_code_simplifier(code_input):
     def_list.sort(key=lambda element: element.name)
     import_from_list.sort(key=lambda element: element.module)
     import_list.sort(key=lambda element: element.names[0].name)
-    root.body = import_from_list + import_list + class_list + def_list + rest_list
-    root = ast.parse(ast.unparse(root))
-    transformer = Transformer()
-    ast.fix_missing_locations(transformer.visit(root))
-    output = ast.unparse(root)
-    line_list = output.split('\n')
-    if '' in line_list:
-        line_list = list(filter(lambda element: element != '', line_list))
-    name_main_index = line_list.index("if __name__ == '__main__':")
-    line_list.insert(name_main_index, '')
-    line_list.insert(name_main_index, '')
-    def_indices = [index for index, element in enumerate(line_list) if element.startswith('def ')]
-    for def_index in reversed(def_indices):
+    root.body = import_from_list + import_list + class_list + def_list + other_list
+    code_unparsed = ast.unparse(root)
+    line_list = code_unparsed.split('\n')
+    line_list = list(filter(lambda line: line != '', line_list))
+    if_name_main_index = line_list.index("if __name__ == '__main__':")
+    line_list.insert(if_name_main_index, '')
+    line_list.insert(if_name_main_index, '')
+    def_index_list = [index for index, element in enumerate(line_list) if element.startswith('def ')]
+    for def_index in reversed(def_index_list):
         if def_index > 0:
             line_list.insert(def_index, '')
             line_list.insert(def_index, '')
-    class_def_indices = [index for index, element in enumerate(line_list) if element.startswith('    def ')]
-    for def_index in reversed(class_def_indices):
-        if def_index > 0:
-            if line_list[def_index - 1].startswith('    @'):
-                line_list.insert(def_index - 1, '')
+    class_def_index_list = [index for index, element in enumerate(line_list) if element.startswith('    def ')]
+    for class_def_index in reversed(class_def_index_list):
+        if class_def_index > 0:
+            if line_list[class_def_index - 1].startswith('    @'):
+                line_list.insert(class_def_index - 1, '')
             else:
-                line_list.insert(def_index, '')
-    class_indices = [index for index, element in enumerate(line_list) if element.startswith('class ')]
-    for def_index in reversed(class_indices):
-        if def_index > 0:
-            line_list.insert(def_index, '')
-            line_list.insert(def_index, '')
-    output = '\n'.join(line_list)
-    output += '\n'
+                line_list.insert(class_def_index, '')
+    class_index_list = [index for index, element in enumerate(line_list) if element.startswith('class ')]
+    for class_index in reversed(class_index_list):
+        if class_index > 0:
+            line_list.insert(class_index, '')
+            line_list.insert(class_index, '')
+    code_output_string = '\n'.join(line_list) + '\n'
     if isinstance(code_input, str):
         with open(code_input, 'r+') as file:
-            if output != file.read():
+            if code_output_string != file.read():
                 file.seek(0)
-                file.write(output)
+                file.write(code_output_string)
                 file.truncate()
                 sys.exit(1)
     elif isinstance(code_input, TextIOWrapper):
-        return output
+        return code_output_string
 
 
 if __name__ == '__main__':
