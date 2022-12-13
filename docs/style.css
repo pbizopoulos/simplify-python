@@ -2,6 +2,10 @@
 	float: left;
 }
 
+#output-pre {
+	margin-left: 50%;
+}
+
 button {
 	width: 100%;
 }
@@ -10,7 +14,6 @@ pre {
 	border: groove;
 	line-height: normal;
 	margin: 0;
-	margin-left: 50%;
 }
 
 select {

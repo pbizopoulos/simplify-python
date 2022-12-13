@@ -24,12 +24,12 @@ class Tests(unittest.TestCase):
         for test_file_name in self.test_file_name_list:
             with self.subTest(test_file_name=test_file_name):
                 if test_file_name.startswith('forbid_'):
-                    with open(join('tests', test_file_name)) as file:
+                    with open(join('tests', test_file_name), encoding='utf-8') as file:
                         self.assertRaises(AssertionError, source_code_simplifier, file)
                 elif test_file_name.endswith('_bad.py'):
-                    with open(join('tests', test_file_name)) as file:
+                    with open(join('tests', test_file_name), encoding='utf-8') as file:
                         code_output = source_code_simplifier(file)
-                    with open(join('tests', test_file_name.replace('bad', 'good'))) as file:
+                    with open(join('tests', test_file_name.replace('bad', 'good')), encoding='utf-8') as file:
                         code_output_good = file.read()
                     self.assertEqual(code_output, code_output_good)
 

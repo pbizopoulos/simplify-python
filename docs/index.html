@@ -18,20 +18,32 @@
 		</nav>
 		<h3>General rules:</h3>
 		<ul>
-			<li>There is one and only one module named main.py</li>
+			<li>There is one and only one module named main.py (local imports are forbidden)</li>
+			<li>The module has only one argument: DEBUG (argparse import is forbidden)</li>
 			<li>The module is passed through the Python ast parser and unparser</li>
 			<li>The children of the module are placed in the following order: <ol>
 					<li>from import statements</li>
 					<li>import statements</li>
-					<li>classes</li>
-					<li>defs</li>
-					<li>if __name__ == '__main__': main() statement</li>
+					<li>class statements</li>
+					<li>def statements</li>
+					<li>if __name__ == '__main__': main()</li>
 				</ol>
 			</li>
 			<li>Classes only contain defs</li>
-			<li>Everything that can be sorted is sorted</li>
-			<li>Forbid/replace anything complex when something newer/simpler is available</li>
-			<li>Forbid/remove anything that does not contribute to the result (e.g. print statement)</li>
+			<li>Sort: <ol>
+					<li>from import statements according to package name</li>
+					<li>import statements according to package name</li>
+					<li>classes according to name</li>
+					<li>defs according to name</li>
+					<li>defs arguments according to name</li>
+				</ol>
+			</li>
+			<li>Forbid/replace anything old/complex when something newer/simpler is available</li>
+			<li>Forbid/remove anything that does not contribute to the result (e.g. print statements) <ol>
+					<li>logging import</li>
+					<li>print statements</li>
+				</ol>
+			</li>
 		</ul>
 		<h3>Installation:</h3>
 		<code>python3 -m pip install https://github.com/pbizopoulos/source-code-simplifier/archive/main.zip</code>
@@ -47,8 +59,7 @@
 		</div>
 		<div>
 			<textarea id="input-textarea" spellcheck="false"></textarea>
-			<pre id="difference-pre"></pre>
-			<pre id="simplified-pre" hidden></pre>
+			<pre id="output-pre"></pre>
 		</div>
 		<py-script src="./index.py"></py-script>
 	</body>

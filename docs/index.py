@@ -37,27 +37,23 @@ def on_keyup_input_textarea(_):
                 difference_styled_line_list.append(f'<span style="color:red;">{difference_line}</span>')
             else:
                 difference_styled_line_list.append(difference_line)
-        document.getElementById('difference-pre').innerHTML = '\n'.join(difference_styled_line_list)
-        document.getElementById('simplified-pre').innerHTML = simplified
+        if document.getElementById('difference-simplified-select').value == 'difference':
+            document.getElementById('output-pre').innerHTML = '\n'.join(difference_styled_line_list)
+        elif document.getElementById('difference-simplified-select').value == 'simplified':
+            document.getElementById('output-pre').innerHTML = simplified
     except Exception as exception:
-        document.getElementById('difference-pre').innerHTML = exception
+        document.getElementById('output-pre').innerHTML = exception
 
 
 def on_select_input(_):
     with open(document.getElementById('input-select').value) as file:
         document.getElementById('input-textarea').value = file.read()[:-1]
-    document.getElementById('difference-pre').innerHTML = ''
-    document.getElementById('simplified-pre').innerHTML = ''
+    document.getElementById('output-pre').innerHTML = ''
     on_keyup_input_textarea(_)
 
 
 def on_select_input_simplified_difference(_):
-    if document.getElementById('difference-simplified-select').value == 'difference':
-        document.getElementById('difference-pre').hidden = False
-        document.getElementById('simplified-pre').hidden = True
-    elif document.getElementById('difference-simplified-select').value == 'simplified':
-        document.getElementById('difference-pre').hidden = True
-        document.getElementById('simplified-pre').hidden = False
+    on_keyup_input_textarea(_)
 
 
 if __name__ == '__main__':
