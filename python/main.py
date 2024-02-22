@@ -47,7 +47,8 @@ class Tests(unittest.TestCase):
             code_output_before = simplify_python(file.read().encode())
         with Path("prm/after.py").open(encoding="utf-8") as file:
             code_output_after = file.read()
-        assert code_output_before.decode() == code_output_after  # type: ignore[union-attr]
+        if code_output_before.decode() != code_output_after:  # type: ignore[union-attr]
+            raise AssertionError
 
     def test_simplify_python_file_input(self: Tests) -> None:
         copyfile("prm/before.py", "tmp/before_processed.py")
@@ -56,7 +57,8 @@ class Tests(unittest.TestCase):
             code_output_before_processed = file.read()
         with Path("prm/after.py").open(encoding="utf-8") as file:
             code_output_after = file.read()
-        assert code_output_before_processed == code_output_after
+        if code_output_before_processed != code_output_after:
+            raise AssertionError
 
 
 def main() -> None:
