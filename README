@@ -1,0 +1,25 @@
+# Simplify python
+https://pbizopoulos.github.io/simplify-python
+
+# Requirements
+POSIX Shell & Utilities
+Git
+Docker
+
+# Download
+git clone https://github.com/pbizopoulos/simplify-python $HOME/github.com/pbizopoulos/simplify-python
+cd $HOME/github.com/pbizopoulos/simplify-python/
+
+# Development
+cd docs/ && make clean check all && cd ..
+cd python/ && make clean check all && cd ..
+
+# Staging
+cd docs/ && make STAGING=1
+
+# Installation
+pip install https://github.com/pbizopoulos/simplify-python/tarball/main#subdirectory=python
+
+# Usage
+simplify_python main.py
+

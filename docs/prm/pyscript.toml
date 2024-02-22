@@ -1,0 +1,5 @@
+[[fetch]]
+from = "https://raw.githubusercontent.com/pbizopoulos/simplify-python/main/python/main.py"
+
+[[fetch]]
+from = "https://raw.githubusercontent.com/pbizopoulos/simplify-python/main/python/prm/before.py"
