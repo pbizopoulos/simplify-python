@@ -10,18 +10,8 @@ from typing import Any
 class Transformer(ast.NodeTransformer):
     def visit(self: Transformer, node: Any) -> Any:  # noqa: ANN401
         self.generic_visit(node)
-        if isinstance(node, ast.Expr):
-            if isinstance(node.value, ast.Constant):
-                return None
-            if isinstance(node.value, ast.Call):  # noqa: SIM102
-                if hasattr(node.value.func, "id") and node.value.func.id == "print":
-                    return None
-        if isinstance(node, ast.FunctionDef):
-            node.returns = None
-            if node.args.args:
-                for arg in node.args.args:
-                    arg.annotation = None
-            return node
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant):
+            return None
         return node
 
 
