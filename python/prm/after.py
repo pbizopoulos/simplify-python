@@ -1,5 +1,4 @@
-def main(arg: int) -> None:
+def main(arg) -> None:
     tmp = arg
-    print('End of function.')
 if __name__ == '__main__':
     main(1)

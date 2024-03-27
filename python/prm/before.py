@@ -12,14 +12,14 @@ quote docstring."""
 
 
 
-def main(arg: int) -> None:
-    """Single line double quote docstring."""
+def  main(  arg ) ->   None   :
+  """Single line double quote docstring."""
 
-    tmp = arg
+  tmp  =     \
+          arg
 
-    # Commend in def.
+  # Commend in def.
 
-    print('End of function.')
 
 
 
